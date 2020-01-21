@@ -18,3 +18,13 @@ function setToken(token, expiresAt) {
   window.localStorage.setItem("token", token);
   window.localStorage.setItem("expiresAt", expiresAt);
 }
+
+export const isLoggedIn = () => {
+  let token = window.localStorage.getItem("token");
+
+  if (token) {
+    return true;
+  }
+
+  return false;
+};

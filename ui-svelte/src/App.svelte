@@ -1,23 +1,34 @@
 <script>
-  import { Router, Link, Route } from "svelte-routing";
+  import { Router, navigateTo } from "svelte-router-spa";
   import Header from "./components/header.svelte";
-  import notFound from "./views/404.svelte";
-  import Home from "./views/home.svelte";
-  import Login from "./views/user/login.svelte";
-  import Register from "./views/user/register.svelte";
-  import Protected from "./views/protected.svelte";
-  // Config
-  export let url = "";
+
+  import { routes } from "./routes.ts";
+
+  let token = window.localStorage.getItem("token");
+  if (!token) {
+    navigateTo("/login");
+  }
 </script>
 
 <style lang="scss" global>
-  $primary-color: #f44336;
-
-  $error-color: #e91e1e;
   #app {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+  }
+
+  a {
+    color: #000;
+
+    &:visited,
+    &:active {
+      color: #000;
+    }
+
+    &:hover {
+      color: $primary-color;
+      text-decoration: none;
+    }
   }
 
   .view {
@@ -26,18 +37,9 @@
     flex-direction: column;
   }
 
-  .btn {
-    padding: 15px;
-    border: 0;
-    display: inline-block;
-    &__primary {
-      background-color: $primary-color;
-      color: #fff;
-    }
-  }
-
   .input {
     padding: 15px;
+    font-size: 14px;
   }
 
   .error {
@@ -51,19 +53,23 @@
 </style>
 
 <div id="app">
-  <Router {url}>
-    <Header />
-    <div class="view">
+  <Header />
+  <div class="view">
+    <Router {routes} />
+  </div>
+</div>
+<!-- <Router {url}> -->
 
-      <Route path="/" component={Home} />
+<!--
       <Route path="login" component={Login} />
       <Route path="register" component={Register} />
-
-      <Route path="protected" component={Protected} />
+      {#if token}
+        <Route path="/" component={Home} />
+        <Route path="protected" component={Protected} />
+      {/if}
       <Route component={notFound} />
-
     </div>
 
   </Router>
 
-</div>
+ -->

@@ -8,7 +8,8 @@ const production = !process.env.ROLLUP_WATCH;
 
 export const preprocess = sveltePreprocess({
   scss: {
-    includePaths: ["src"]
+    includePaths: ["src"],
+    data: `@import 'scss/_variables.scss';`
   },
   postcss: {
     plugins: [require("autoprefixer")]

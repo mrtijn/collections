@@ -1,5 +1,11 @@
 <script>
-  import { Link } from "svelte-routing";
+  import { Navigate } from "svelte-router-spa";
+  let token = window.localStorage.getItem("token");
+
+  const Logout = () => {
+    window.localStorage.removeItem("token");
+    window.localStorage.removeItem("expiresAt");
+  };
 </script>
 
 <style lang="scss">
@@ -22,22 +28,32 @@
       margin: 0;
       li {
         margin-right: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        color: #000;
       }
     }
   }
 </style>
 
 <header>
-  <Link to="/">
+  <Navigate to="/">
     <h1>Collections</h1>
-  </Link>
+  </Navigate>
 
   <ul>
     <li>
-      <Link to="login">Login</Link>
+      <Navigate to="login">Login</Navigate>
     </li>
     <li>
-      <Link to="register">Register</Link>
+      <Navigate to="register">Register</Navigate>
     </li>
+    {#if token}
+      <li>
+        <a href="#" on:click={Logout}>Logout</a>
+      </li>
+    {/if}
   </ul>
 </header>

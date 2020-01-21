@@ -1,5 +1,7 @@
 <script>
   import { Login } from "../../services/auth.service.ts";
+  import Button from "../../components/button.svelte";
+
   let username = "";
   let password = "";
   let errorMessage = "";
@@ -8,6 +10,7 @@
     try {
       await Login(username, password);
       errorMessage = "";
+      navigate("/protected", { replace: true });
     } catch (error) {
       console.log(error);
       errorMessage = error.message;
@@ -23,13 +26,27 @@
     width: 100%;
     align-items: space-between;
     justify-content: center;
-
     flex: 1;
+    position: relative;
+
+    &:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background-image: url("https://source.unsplash.com/collection/1416491/1600x900");
+      background-size: cover;
+      opacity: 0.4;
+      z-index: 0;
+    }
     &__container {
       background-color: #fff;
       min-width: 400px;
       padding: 15px;
       align-self: center;
+      z-index: 1;
 
       h2 {
         border-bottom: 1px solid #dadada;
@@ -63,7 +80,7 @@
         class="input"
         bind:value={password}
         placeholder="password" />
-      <button class="btn btn__primary" type="submit">Login</button>
+      <Button style="primary">Login</Button>
     </form>
     {#if errorMessage}
       <div class="error">{errorMessage}</div>
