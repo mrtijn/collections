@@ -103,7 +103,7 @@ func getToken(email string, password string) (map[string]interface{}, error) {
 		return nil, formaterror.Parse("wrong password")
 	}
 
-	expiresAt := time.Now().Add(time.Minute * 1).Unix()
+	expiresAt := time.Now().Add(time.Minute * 10000).Unix()
 	tk := &auth.Token{
 		UserID: user.ID,
 		Email:  user.Email,

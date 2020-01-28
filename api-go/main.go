@@ -5,11 +5,16 @@ import (
 	"collections/models"
 	"collections/routes"
 	"fmt"
+	"os"
 	"strconv"
 
 	"github.com/gin-contrib/cors"
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 )
+
+// var tmdbConfig = tmdb.GetTmdbConfiguration()
 
 func main() {
 	// Port
@@ -17,9 +22,16 @@ func main() {
 
 	// Setup db
 	var database = database.Connect()
-	database.AutoMigrate(&models.User{})
+	database.AutoMigrate(&models.User{}, &models.Collection{})
+	database.Model(&models.Collection{}).AddForeignKey("author_id", "users(id)", "RESTRICT", "CASCADE")
 
 	router := gin.Default()
+
+	// Setup sessions
+	store := cookie.NewStore([]byte(os.Getenv("sessionSecret")))
+	router.Use(sessions.Sessions("collections", store))
+
+	// Setup TMDB Connection
 
 	// Setup CORS
 	corsConfig := cors.DefaultConfig()
@@ -37,7 +49,6 @@ func main() {
 }
 
 func startWebServer(server *gin.Engine, port int) {
-	// fmt.Println("Starting webserver...")
 	fmt.Println("Started webserver on port", port)
 	server.Run(":" + strconv.Itoa(port))
 

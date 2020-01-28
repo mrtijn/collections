@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -29,6 +30,7 @@ func VerifyPassword(hashedPassword, password string) error {
 // CheckAccessToken verify token
 func CheckAccessToken() gin.HandlerFunc {
 	return func(c *gin.Context) {
+
 		var tokenString = c.GetHeader("x-access-token")
 		tokenString = strings.TrimSpace(tokenString)
 
@@ -45,7 +47,8 @@ func CheckAccessToken() gin.HandlerFunc {
 		})
 
 		if err != nil {
-			c.JSON(http.StatusForbidden, err)
+			fmt.Println(err)
+			c.JSON(http.StatusForbidden, "Token expired")
 			c.Abort()
 			return
 		}
@@ -53,12 +56,16 @@ func CheckAccessToken() gin.HandlerFunc {
 		claims, ok := token.Claims.(*Token)
 		tokenExpired := claims.StandardClaims.ExpiresAt <= time.Now().Unix()
 
-		fmt.Println(token)
-
 		if ok && token.Valid && tokenExpired {
 			c.JSON(http.StatusForbidden, "Token expired")
 			c.Abort()
+			return
 		}
+
+		// If all ok, update session
+		session := sessions.Default(c)
+		session.Set("userID", claims.UserID)
+		session.Save()
 
 		c.Next()
 
