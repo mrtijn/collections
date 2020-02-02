@@ -12,6 +12,7 @@
           placeholder="Username"
         />
         <input
+          id="password"
           type="password"
           class="input"
           placeholder="password"
@@ -45,7 +46,7 @@ export default class LoginView extends Vue {
       await Login(this.username, this.password);
       this.errorMessage = "";
       console.log(this);
-      this.$router.push("/protected");
+      this.$router.push("/movies");
     } catch (error) {
       console.log(error);
       this.errorMessage = error.message;

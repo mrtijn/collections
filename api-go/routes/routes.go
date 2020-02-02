@@ -21,6 +21,7 @@ func CreateRoutes(r *gin.RouterGroup) *gin.RouterGroup {
 	// Collections
 	collectionRoutes := r.Group("/collection").Use(auth.CheckAccessToken())
 	collectionRoutes.POST("/create", collection.CreateCollection)
+	collectionRoutes.POST("/add/movie/", collection.AddToCollection)
 	collectionRoutes.GET("/:id", collection.GetCollection)
 
 	collectionsRoutes := r.Group("/collections").Use(auth.CheckAccessToken())
@@ -28,7 +29,7 @@ func CreateRoutes(r *gin.RouterGroup) *gin.RouterGroup {
 
 	// Movies
 	movieRoutes := r.Group("/movie").Use(auth.CheckAccessToken())
+	movieRoutes.POST("/create", movie.CreateMovie)
 	movieRoutes.GET("/search/:searchterm", movie.SearchMovie)
-
 	return r
 }

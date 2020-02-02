@@ -5,29 +5,42 @@
     </router-link>
 
     <ul>
-      <li>
-        <router-link to="login">Login</router-link>
-      </li>
-      <li>
-        <router-link to="register">Register</router-link>
-      </li>
-      <li>
-        <a href="#" @click="Logout">Logout</a>
-      </li>
+      <template v-if="!isLoggedIn">
+        <li>
+          <router-link to="/login">Login</router-link>
+        </li>
+        <li>
+          <router-link to="/register">Register</router-link>
+        </li>
+      </template>
+
+      <template v-if="isLoggedIn">
+        <li>
+          <router-link to="/movies">Movies</router-link>
+        </li>
+        <li>
+          <router-link to="/profile">Profile</router-link>
+        </li>
+        <li>
+          <a href="#" @click="Logout">Logout</a>
+        </li>
+      </template>
     </ul>
   </header>
 </template>
 
 <script lang="ts">
-import { Logout } from "@/services/auth.service";
+import { Logout, isLoggedIn } from "@/services/auth.service";
+import { Component } from "vue-property-decorator";
 import Vue from "vue";
-export default Vue.extend({
-  methods: {
-    Logout() {
-      Logout();
-    }
+
+@Component
+export default class Header extends Vue {
+  isLoggedIn = isLoggedIn();
+  Logout() {
+    Logout();
   }
-});
+}
 </script>
 
 <style lang="scss" scoped>

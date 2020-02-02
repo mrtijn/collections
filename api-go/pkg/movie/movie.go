@@ -12,12 +12,12 @@ import (
 
 var db = database.Connect()
 
-// CreateMovie create movie in db
+// CreateMovie create movie
 func CreateMovie(c *gin.Context) {
 	movie := &models.Movie{}
 
 	err := c.Bind(movie)
-	// fmt.Println(err)
+
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Missing data"})
 		return
@@ -50,3 +50,7 @@ func SearchMovie(c *gin.Context) {
 
 	c.JSON(http.StatusOK, resp)
 }
+
+// func GetMovieById(c.) {
+
+// }

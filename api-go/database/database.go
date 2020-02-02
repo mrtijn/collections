@@ -31,7 +31,6 @@ func Connect() *gorm.DB {
 		panic("failed to connect to db" + fmt.Sprintln(err))
 	}
 
-	// defer db.Close()
 	db.LogMode(true)
 	// Config.db.AutoMigrate(&models.User{})
 

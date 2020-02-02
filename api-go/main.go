@@ -22,7 +22,7 @@ func main() {
 
 	// Setup db
 	var database = database.Connect()
-	database.AutoMigrate(&models.User{}, &models.Collection{})
+	database.AutoMigrate(&models.User{}, &models.Collection{}, &models.Movie{})
 	database.Model(&models.Collection{}).AddForeignKey("author_id", "users(id)", "RESTRICT", "CASCADE")
 
 	router := gin.Default()
@@ -37,7 +37,7 @@ func main() {
 	corsConfig := cors.DefaultConfig()
 	corsConfig.AllowAllOrigins = true
 	corsConfig.AllowCredentials = true
-	corsConfig.AddAllowHeaders("x-custom-header")
+	corsConfig.AddAllowHeaders("x-access-token")
 	router.Use(cors.New(corsConfig))
 
 	// Setup routes

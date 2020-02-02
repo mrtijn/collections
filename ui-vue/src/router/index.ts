@@ -33,13 +33,31 @@ const routes = [
       import(/* webpackChunkName: "login" */ "../views/user/Register.vue")
   },
   {
-    path: "/protected",
-    name: "protected",
+    path: "/profile",
+    name: "profile",
     meta: {
       auth: true
     },
     component: () =>
-      import(/* webpackChunkName: "login" */ "../views/Protected.vue")
+      import(/* webpackChunkName: "login" */ "../views/user/Profile.vue")
+  },
+  {
+    path: "/movies",
+    name: "movies",
+    meta: {
+      auth: true
+    },
+    component: () =>
+      import(/* webpackChunkName: "login" */ "../views/movie/Index.vue")
+  },
+  {
+    path: "/collection/:id",
+    name: "collection-detail",
+    meta: {
+      auth: true
+    },
+    component: () =>
+      import(/* webpackChunkName: "login" */ "../views/collection/Detail.vue")
   }
 ];
 
